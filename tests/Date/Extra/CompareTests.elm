@@ -16,6 +16,8 @@ tests =
     describe "Date.Compare tests"
         [ describe "is tests" <|
             List.map runIsCase isCases
+        , describe "order tests" <|
+            List.map runOrderCase orderCases
         , describe "is3 tests" <|
             List.map runIs3Case is3TestCases
         ]
@@ -97,6 +99,60 @@ isCases =
       , Core.fromTime aTestTime6
       , Core.fromTime aTestTime6
       , True
+      )
+    ]
+
+
+runOrderCase ( name, comp, date1, date2, expected ) =
+    test name <|
+        \() ->
+            Expect.equal
+                expected
+                (Compare.order comp date1 date2)
+
+
+orderCases =
+    [ ( "After date1 > date2"
+      , After
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime5
+      , GT
+      )
+    , ( "After same dates"
+      , After
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime6
+      , GT
+      )
+    , ( "SameOrAfter same dates"
+      , SameOrAfter
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime6
+      , EQ
+      )
+    , ( "Before date1 > date2"
+      , Before
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime5
+      , LT
+      )
+    , ( "Before date1 < date2"
+      , Before
+      , Core.fromTime aTestTime5
+      , Core.fromTime aTestTime6
+      , LT
+      )
+    , ( "Before same dates"
+      , Before
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime6
+      , LT
+      )
+    , ( "SameOrBefore same dates"
+      , SameOrBefore
+      , Core.fromTime aTestTime6
+      , Core.fromTime aTestTime6
+      , EQ
       )
     ]
 

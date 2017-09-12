@@ -1,6 +1,7 @@
 module Date.Extra.Compare
     exposing
         ( is
+        , order
         , is3
         , Compare2(..)
         , Compare3(..)
@@ -91,6 +92,28 @@ is comp date1 date2 =
 
             SameOrAfter ->
                 time1 >= time2
+
+
+{-| Compare two dates by order.
+-}
+order : Compare2 -> Date -> Date -> Order
+order comp date1 date2 =
+    let
+        time1 =
+            Core.toTime date1
+
+        time2 =
+            Core.toTime date2
+    in
+        case comp of
+            Before ->
+                LT
+
+            After ->
+                GT
+
+            _ ->
+                EQ
 
 
 {-| Compare three dates.
